@@ -62,20 +62,13 @@ module Rumonade # :nodoc:
     include Monad
 
     # @return [Boolean] Returns +true+ if +None+, +false+ if +Some+
-    def empty?
-      raise(NotImplementedError)
-    end
+    #def empty?
 
     # Returns contents if Some, or raises NoSuchElementError if None
-    def get
-      if !empty? then value else raise NoSuchElementError end
-    end
+    # def get
 
     # Returns contents if Some, or given value or result of given block or lambda if None
-    def get_or_else(val_or_lam = nil, &blk)
-      v_or_f = val_or_lam || blk
-      if !empty? then value else (v_or_f.respond_to?(:call) ? v_or_f.call : v_or_f) end
-    end
+    # def get_or_else(val_or_lam = nil, &blk)
 
     # Returns contents if Some, or +nil+ if None
     def or_nil
@@ -96,6 +89,16 @@ module Rumonade # :nodoc:
       false
     end
 
+    # Returns contents if Some, or raises NoSuchElementError if None
+    def get
+      value
+    end
+
+    # Returns contents if Some, or given value or result of given block or lambda if None
+    def get_or_else(val_or_lam = nil, &blk)
+      value
+    end
+
     def ==(other)
       other.is_a?(Some) && other.value == value
     end
@@ -112,6 +115,17 @@ module Rumonade # :nodoc:
     # @return (see Option#empty?)
     def empty?
       true
+    end
+
+    # Returns contents if Some, or raises NoSuchElementError if None
+    def get
+      raise NoSuchElementError
+    end
+
+    # Returns contents if Some, or given value or result of given block or lambda if None
+    def get_or_else(val_or_lam = nil, &blk)
+      v_or_f = val_or_lam || blk
+      v_or_f.respond_to?(:call) ? v_or_f.call : v_or_f
     end
 
     def ==(other)
